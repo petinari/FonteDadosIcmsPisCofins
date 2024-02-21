@@ -16,12 +16,15 @@ jsonNcm['PJ_PF'] = ""
 #adiciona a coluna codigo a variavel CSOSN
 jsonNcm['CSOSN'] = ""
 
+jsonNcm['CFOP'] = ""
+
 new_rows = []
 
 for index, row in jsonNcm.iterrows():
     ncm = row['Codigo']
-    new_rows.append({'ncm': ncm, 'PJ_PF': 0, 'CSOSN': row['CSOSN']})
-    new_rows.append({'ncm': ncm, 'PJ_PF': 1, 'CSOSN': row['CSOSN']})
+    new_rows.append({'ncm': ncm, 'PJ_PF': 0, 'CSOSN': row['CSOSN'], 'CFOP': row['CFOP']})
+    new_rows.append({'ncm': ncm, 'PJ_PF': 1, 'CSOSN': row['CSOSN'], 'CFOP': row['CFOP']})
+
 
 jsonNcm = pd.DataFrame(new_rows)
 
@@ -33,6 +36,8 @@ jsonNcm.loc[jsonNcm['PJ_PF'] == 0, 'CSOSN'] = 101
 
 #preenche com 102 o CSOSN quando o PJ_PF for 1
 jsonNcm.loc[jsonNcm['PJ_PF'] == 1, 'CSOSN'] = 102
+
+jsonNcm['CFOP'] = 5102
 
 
 SalvaNCMs(jsonNcm.to_dict('records'))

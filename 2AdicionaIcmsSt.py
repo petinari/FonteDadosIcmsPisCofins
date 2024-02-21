@@ -37,6 +37,7 @@ def calculate_fuzz_ratios(subset, ncm_subset):
 
 def update_csosn(df, indices):
     df.loc[indices, 'CSOSN'] = 500
+    df.loc[indices, 'CFOP'] = 5405
 
 
 def AjustaNcmSt(dfNcms, dfSt):
