@@ -52,7 +52,7 @@ def AjustaNcmSt(dfNcms, dfSt):
     for length, mask in mask_by_len.items():
         dfNcms_subset = dfNcms[mask]
         ratios = calculate_fuzz_ratios(dfNcms_subset, ncm_by_len[length]['NCM'])
-        index_to_update = ratios[ratios > 90].index
+        index_to_update = ratios[ratios == 100].index
         update_csosn(dfNcms, index_to_update)
 
     return dfNcms
