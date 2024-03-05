@@ -3,7 +3,7 @@ import pandas as pd
 import tensorflow as tf
 from keras.layers import Input
 import joblib
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 import matplotlib.pyplot as plt
 from database import GetNcms
 from imblearn.under_sampling import RandomUnderSampler
@@ -26,16 +26,30 @@ dfNcms = dfNcms.astype(str)
 
 valores = ['500']
 
-df_duplicado = dfNcms[dfNcms['CSOSN'].isin(valores)]
 
-dfNcms = pd.concat([dfNcms, df_duplicado])
+#
+# df_duplicado_pj = dfNcms[dfNcms['PJ_PF'].isin(["pj"])]
+#
+# df_duplicado_pf = dfNcms[dfNcms['PJ_PF'].isin(["pf"])]
+
+df_duplicado_CSOSN = dfNcms[dfNcms['CSOSN'].isin(valores)]
+
+dfNcms = pd.concat([dfNcms, df_duplicado_CSOSN, df_duplicado_CSOSN,df_duplicado_CSOSN ])
+
+#quadruplica os dados para balancear as classes
+
+
+
+dfNcms = dfNcms.reset_index(drop=True)
+
+
 
 # separa os dados em X e y
-X = dfNcms.iloc[:, :2]
+X = dfNcms.iloc[:, :1]
 
-y = dfNcms.iloc[:, 2:]
+y = dfNcms.iloc[:, 1:]
 
-y = y.astype(int)
+# y = y.astype(int)
 # cria um onehot encoder para as classes
 
 
@@ -52,7 +66,6 @@ X, y = shuffle(X, y, random_state=0)
 encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
 
 X = encoder.fit_transform(X)
-
 
 
 #X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=True, random_state=453)
@@ -132,9 +145,9 @@ history = model.fit(X, {'y_class_CSOSN': y_class_CSOSN, 'y_class_CFOP': y_class_
 
 print(encoder.get_feature_names_out())
 
-# teste = ['25232100','1','500']
+# teste = ['25232100','500']
 
-teste1 = ['29309022', '0']
+teste1 = ['25232100']
 
 teste1 = np.array(pd.DataFrame(encoder.transform([teste1])))
 
@@ -161,6 +174,7 @@ joblib.dump(encoder, 'encoder_ncm.joblib')
 #salva o label encoder
 joblib.dump(label_encoderCSOSN, 'label_encoderCSOSN.joblib')
 joblib.dump(label_encoderCFOP, 'label_encoderCFOP.joblib')
+
 
 model.save('modelo_ncm.keras')
 
