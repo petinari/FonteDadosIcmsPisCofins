@@ -5,7 +5,7 @@ from database import SalvaNCMs
 dataframeNCM = pd.read_json('Tabela_NCM_Vigente_20240205.json')
 
 # Flattening the json
-jsonNcm = pd.json_normalize(dataframeNCM['Nomenclaturas'])
+jsonNcm = pd.json_normalize(dataframeNCM['Nomenclaturas'].tolist())
 
 #remove as linhas que o codigo da ncm tem menos de 8 caracteres
 jsonNcm = jsonNcm[jsonNcm['Codigo'].str.len() == 8]

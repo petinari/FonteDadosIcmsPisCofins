@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 # metodo que retorna uma conexao ao banco de dados
 def __get_connection():
-    return MongoClient('localhost', 27017, username='robson', password='1234')
+    return MongoClient('localhost', 27017)
 
 def SalvaNCMs(itens_list):
     conn = __get_connection()
